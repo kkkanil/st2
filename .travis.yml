@@ -1,5 +1,5 @@
 os: linux
-dist: xenial
+dist: bionic
 arch: s390x
 language: python
 
