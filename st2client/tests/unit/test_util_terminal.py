@@ -45,11 +45,11 @@ class TerminalUtilsTestCase(unittest2.TestCase):
 
     @mock.patch('struct.unpack', mock.Mock(return_value=(333, 444)))
     def test_get_terminal_size_columns_stdout_is_used(self):
-        print("================= ANIL 444 test ================")
+        print("================= ANIL 444 test BEGIN ================")
         sys.stdout.flush()
         columns = get_terminal_size_columns()
         self.assertEqual(columns, 444)
-        print("================= ANIL 444 test ================")
+        print("================= ANIL 444 test END ================")
         sys.stdout.flush()
 
     @mock.patch('struct.unpack', mock.Mock(side_effect=Exception('a')))
