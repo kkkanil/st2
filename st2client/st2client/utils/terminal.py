@@ -19,6 +19,8 @@ import os
 import struct
 import subprocess
 import sys
+import time
+import datetime
 
 from st2client.utils.color import format_status
 
@@ -61,8 +63,11 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
         import fcntl
         import termios
         # Return a tuple (lines, columns)
-        print("ANIL in ioctl_GWINSZ")
+        ts = time.time()
+        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        print("ANIL in ioctl_GWINSZ"+str(st))
         sys.stdout.flush()
+        time.sleep(30)
         return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
 
     # 2. try stdin, stdout, stderr
