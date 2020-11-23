@@ -43,12 +43,14 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
     :rtype: ``int``
     :return: columns
     """
+    print("ANIL In get_terminal_size_columns")
     # 1. Try COLUMNS environment variable first like in upstream Python 3 method -
     # https://github.com/python/cpython/blob/master/Lib/shutil.py#L1203
     # This way it's consistent with upstream implementation. In the past, our implementation
     # checked those variables at the end as a fall back.
     try:
         columns = os.environ['COLUMNS']
+        print("ANIL in try - os.environ")
         return int(columns)
     except (KeyError, ValueError):
         pass
@@ -57,6 +59,7 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
         import fcntl
         import termios
         # Return a tuple (lines, columns)
+        print("ANIL in ioctl_GWINSZ")
         return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
 
     # 2. try stdin, stdout, stderr
@@ -70,6 +73,7 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
     try:
         fd = os.open(os.ctermid(), os.O_RDONLY)
         try:
+            print("ANIL in os.ctermid")
             return ioctl_GWINSZ(fd)[1]
         finally:
             os.close(fd)
@@ -83,12 +87,14 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
                                    stdout=subprocess.PIPE,
                                    stderr=open(os.devnull, 'w'))
         result = process.communicate()
+        print("ANIL in try stty size")
         if process.returncode == 0:
             return tuple(int(x) for x in result[0].split())[1]
     except Exception:
         pass
 
     # 5. return default fallback value
+    print("ANIL in default")
     return default
 
 
