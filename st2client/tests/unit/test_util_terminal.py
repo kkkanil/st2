@@ -44,15 +44,6 @@ class TerminalUtilsTestCase(unittest2.TestCase):
 
         self.assertEqual(columns, 222)
 
-    @mock.patch('struct.unpack', mock.Mock(return_value=(333, 444)))
-    def test_get_terminal_size_columns_stdout_is_used(self):
-        print("================= ANIL 444 test BEGIN ================")
-        sys.stdout.flush()
-        columns = get_terminal_size_columns()
-        self.assertEqual(columns, 444)
-        print("================= ANIL 444 test END ================")
-        sys.stdout.flush()
-
     @mock.patch('struct.unpack', mock.Mock(side_effect=Exception('a')))
     @mock.patch('subprocess.Popen')
     def test_get_terminal_size_subprocess_popen_is_used(self, mock_popen):
@@ -67,6 +58,15 @@ class TerminalUtilsTestCase(unittest2.TestCase):
         columns = get_terminal_size_columns()
         self.assertEqual(columns, 666)
 
+    @mock.patch('struct.unpack', mock.Mock(return_value=(333, 444)))
+    def test_get_terminal_size_columns_stdout_is_used(self):
+        print("================= ANIL 444 test BEGIN ================")
+        sys.stdout.flush()
+        columns = get_terminal_size_columns()
+        self.assertEqual(columns, 444)
+        print("================= ANIL 444 test END ================")
+        sys.stdout.flush()
+        
     @mock.patch('struct.unpack', mock.Mock(side_effect=Exception('a')))
     @mock.patch('subprocess.Popen', mock.Mock(side_effect=Exception('b')))
     def test_get_terminal_size_default_values_are_used(self):
