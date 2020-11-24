@@ -67,17 +67,17 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         print("ANIL in ioctl_GWINSZ"+str(st))
         sys.stdout.flush()
-        time.sleep(30)
-        return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, b"\x00" * 4))
-
+        packed = fcntl.ioctl(fd, termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0))
+        rows, cols, _, _ = struct.unpack('HHHH', packed)
+        return cols
+        # return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, b"\x00" * 4))
+    
     # 2. try stdin, stdout, stderr
     for fd in (0, 1, 2):
         try:
             return ioctl_GWINSZ(fd)[1]
         except Exception:
-            return None
-    # anil          pass
-
+            pass
     # 3. try os.ctermid()
     try:
         fd = os.open(os.ctermid(), os.O_RDONLY)
