@@ -67,9 +67,8 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         print("ANIL in ioctl_GWINSZ"+str(st))
         sys.stdout.flush()
-        call = fcntl.ioctl(0, termios.TIOCGWINSZ, "\x00"*8)
-        height, width = struct.unpack("hhhh", call)[:2]
-        return width
+        size = struct.unpack('2h', fcntl.ioctl(fileno, termios.TIOCGWINSZ, '    '))
+        return size
         # return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, b"\x00" * 4))
     
     # 2. try stdin, stdout, stderr
