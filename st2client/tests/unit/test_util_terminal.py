@@ -20,6 +20,7 @@ import os
 import unittest2
 import mock
 import sys
+import struct 
 
 from st2client.utils.terminal import DEFAULT_TERMINAL_SIZE_COLUMNS
 from st2client.utils.terminal import get_terminal_size_columns
