@@ -68,14 +68,15 @@ def get_terminal_size_columns(default=DEFAULT_TERMINAL_SIZE_COLUMNS):
         print("ANIL in ioctl_GWINSZ"+str(st))
         sys.stdout.flush()
         time.sleep(30)
-        return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+        return struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, b"\x00" * 4))
 
     # 2. try stdin, stdout, stderr
     for fd in (0, 1, 2):
         try:
             return ioctl_GWINSZ(fd)[1]
         except Exception:
-            pass
+            return None
+    # anil          pass
 
     # 3. try os.ctermid()
     try:
